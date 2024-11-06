@@ -118,6 +118,7 @@
   <!-- Results Page for Students -->
   <div id="results" class="container" style="display: none;" class="animated">
     <p class="result" id="result-text">Your score: </p>
+    <button class="button" onclick="resetTest()">Take Test Again</button>
   </div>
 
   <!-- Admin Panel (Visible only for Admin) -->
@@ -140,19 +141,13 @@
       { text: "Fill in the blank: 'She is ___ honest person.'", options: ["a", "an", "the", "none"], answer: 1 },
       // Add more questions as needed...
     ];
-    
+
     let currentQuestion = 0;
     let score = 0;
     let studentCount = 0;
     let activeStudents = 0;
     let studentScores = [];  // Array to store student scores
     let studentName = '';
-
-    // Check for participation and prevent re-entry for students
-    if (localStorage.getItem('participated') === 'true') {
-      alert('You have already taken the test.');
-      window.location.href = 'https://www.example.com'; // Redirect to prevent further participation
-    }
 
     // Show name entry page for students
     function showNameEntry() {
@@ -167,11 +162,6 @@
         alert("Please enter your name!");
         return;
       }
-      if (localStorage.getItem('participated') === 'true') {
-        alert('You have already taken the test.');
-        return;
-      }
-      localStorage.setItem('participated', 'true'); // Track participation
       studentCount++;
       activeStudents++;
       document.getElementById("student-name-entry").style.display = "none";
@@ -213,7 +203,16 @@
       updateAdminPanel();
     }
 
-    // Admin Login Function
+    // Reset Test (for students)
+    function resetTest() {
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById("results").style.display = "none";
+      document.getElementById("test").style.display = "block";
+      loadQuestion();
+    }
+
+    // Admin Login
     function loginAdmin() {
       const email = document.getElementById("admin-email").value;
       const password = document.getElementById("admin-password").value;
@@ -245,5 +244,7 @@
       document.getElementById("admin-login").style.display = "block";
     }
   </script>
+
 </body>
 </html>
+
